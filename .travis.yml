@@ -9,9 +9,6 @@ env:
 php:
   - 7.1
 
-before_script:
-  - phpize && ./configure CFLAGS="-O0 --coverage -Wall -Wextra -Werror -Wno-unused-parameter" LDFLAGS="--coverage" EXTRA_LDFLAGS='-precious-files-regex \.gcno\$$' --silent && make --silent
-
 addons:
   coverity_scan:
     project:
