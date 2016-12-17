@@ -15,7 +15,8 @@ addons:
       name: "sjinks/php_nestinglevel"
       description: "Build submitted via Travis CI"
     notification_email: volodymyr@wildwolf.name
-    build_command: "phpize && ./configure && make -j 4"
+    build_command_prepend: "phpize && ./configure"
+    build_command: "make -j 4"
     branch_pattern: coverity
 
 script:
