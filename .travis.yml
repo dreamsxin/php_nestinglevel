@@ -1,20 +1,25 @@
-language:
-  - php
+language: php
 
 sudo: false
 
+env:
+  global:
+    - secure: "kcXR42J1qdMXfSak0cQY/WF0pdfyXWIZEdH1ioyk30SFgKnBcDm5zWI6huYWoYvp0155bRAhwC93QbNlsZjyS6phjADotJl9iYGk32vAY+FqfMY+Y9qPMpjjK6X81r7aVNnMGWL/NzKwAya017vHvQg7Ekz8asfD0dS3YyRPsIm4BA/nLRZEOB9Bbkbn1ty/sHIwEi0prFO3+yf2Q9gx/b9dwkRYUKDEoZuBMHFkUroP6Mm7p6AUsRk1mHiM2+99cVBSAkmRZfzn5Nb88BTcknFlyodFzEt1MyjutclydnjReQq2KlEmWb6FdsE2G3cgplLEdBkmM43/l7czHMTSCpOXNbpG1sVE79kvf0KFjjgBECQYqn8mDbUcjlMiehz+Wx77994IvJ/GfFdGlyZr3owSqHv1KGD88Pj3kBXxIunHK/Urs8yxF08eL8tbx+3uKxo0d5ed3OjH4AYDqQjbGo3z3D2i5AVUxtA4tjFBOaoBvVXqs/RZY6RXt1/w7t2WVXtOxJnosTpNSCDYHvWlzZqLB5GJTzRxsPgcvxqGCJ9E3m/3TD+HJkcLA/pJWWR1wgVf9Yjx72x5nxXlY8Av5vGLsbpQd8Xi8gr0k0qzL1+lLADPh31MOR580ploNee8xjcZDbYVERJOKK6i83NFcWwkg2n0lxoK8k0fxSRTfP4="
+
 php:
-  - 5.5
-  - 5.6
-  - 7.0
   - 7.1
 
 before_script:
   - phpize && ./configure CFLAGS="-O0 --coverage -Wall -Wextra -Werror -Wno-unused-parameter" LDFLAGS="--coverage" EXTRA_LDFLAGS='-precious-files-regex \.gcno\$$' --silent && make --silent
 
-script:
-  - NO_INTERACTIVE=1 make test
+addons:
+  coverity_scan:
+    project:
+      name: "sjinks/php_nestinglevel"
+      description: "Build submitted via Travis CI"
+    notification_email: volodymyr@wildwolf.name
+    build_command: "phpize && ./configure && make -j 4"
+    branch_pattern: coverity
 
-after_success:
-  - cp ./.libs/*.gc{da,no} ./
-  - bash <(curl -s https://codecov.io/bash)
+script:
+  - make
